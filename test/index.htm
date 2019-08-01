@@ -12,9 +12,7 @@
 
 <body class="h-100">
 	<div id="app">
-		<div style="padding:20px; background:red;" @clickout="color='white'">
-			<div style="padding:20px; background:yellow;" v-on:clickout.stop="color='red'" v-on:click="color='yellow'">{{color}}
-			</div>
+		<div style="padding:20px; background:yellow;" v-on:clickout="color='white'" v-on:click="color='yellow'">{{color}}
 		</div>
 	</div>
 	<script>

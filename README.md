@@ -45,13 +45,11 @@ Vue.use(VueOnClickout);
 <!-- no need to call Vue.use(); it does that automatically -->
 ```
 
-And then in your template, on any element, use `v-on:clickout="..."` or `@clickout="..."` and watch the magic happen. You can also use the `.stop` modifier as well. The following example demonstrates it all.
+And then in your template, on any element, use `v-on:clickout="..."` or `@clickout="..."` and watch the magic happen. The following example demonstrates it all.
 
 ```html
 <div id="app">
-	<div style="padding:20px; background:red;" @clickout="color='white'">
-		<div style="padding:20px; background:yellow;" v-on:clickout.stop="color='red'" v-on:click="color='yellow'">{{color}}
-		</div>
+	<div style="padding:20px; background:yellow;" v-on:clickout="color='white'" v-on:click="color='yellow'">{{color}}
 	</div>
 </div>
 <script>
