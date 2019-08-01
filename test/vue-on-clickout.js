@@ -10,7 +10,7 @@
 
 const VueOnClickout = {
 	install(Vue) {
-		const cout = "clickout", stop = "clickoutstop";
+		const cout = "clickout";
 		let clickoutList = [];
 		Vue.directive(cout, {
 			bind(el) {
@@ -19,26 +19,24 @@ const VueOnClickout = {
 				let add = el.addEventListener.bind(el);
 				add('click', () => el.__clickoutFlag = true);
 				add(cout, (e) => {
-					if(e.cancelBubble) el.dispatchEvent(new Event(stop, { bubbles: true }));
+					if(e.cancelBubble) clickoutList.forEach(p => {
+						if(p.contains(el)) p.__clickoutFlag = true;
+					});
 				});
-				add(stop, () => el.__clickoutFlag = true);
 			},
 			unbind(el) {
 				clickoutList.splice(clickoutList.indexOf(el), 1);
 			}
 		});
 
-		function getDepth(el) {
-			let p = el, dep = 0;
-			while(p != document.body && p != null) {
-				p = p.parentNode; dep++;
-			}
-			el.__clickoutDepth = dep;
+		function elSort(e1, e2) {
+			if(e2.contains(e1)) return -1;
+			if(e1.contains(e2)) return 1;
+			return 0;
 		}
 
 		document.addEventListener('click', () => {
-			clickoutList.forEach(e => getDepth(e));
-			clickoutList.sort((e1, e2) => e2.__clickoutDepth - e1.__clickoutDepth);
+			clickoutList.sort(elSort);
 			for(let el of clickoutList) {
 				if(!el.__clickoutFlag) el.dispatchEvent(new Event(cout));
 				el.__clickoutFlag = false;
