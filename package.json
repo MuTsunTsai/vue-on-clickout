@@ -1,6 +1,6 @@
 {
 	"name": "vue-on-clickout",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"description": "Add 'v-on:clickout' event to elements.",
 	"main": "lib/vue-on-clickout.js",
 	"scripts": {
