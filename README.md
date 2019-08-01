@@ -45,19 +45,26 @@ Vue.use(VueOnClickout);
 <!-- no need to call Vue.use(); it does that automatically -->
 ```
 
-And then in your template, on any element, use `v-on:clickout="..."` or `@clickout="..."` and watch the magic happen. The following example demonstrates it all.
+And then in your template, on any element, use `v-on:clickout="..."` or `@clickout="..."` and watch the magic happen. You can also use the `.stop` modifier. The following example demonstrates it all.
 
 ```html
 <div id="app">
-	<div style="padding:20px; background:yellow;" v-on:clickout="color='white'" v-on:click="color='yellow'">{{color}}
+	<div style="padding:20px; background:blue;" v-on:clickout="color='white'">
+		<div style="padding:20px; background:red;" @clickout.stop="color='blue'" v-if="showRed">
+			<div style="padding:20px; background:yellow;" v-on:clickout="color='red'" v-on:click="color='yellow'">{{color}}
+			</div>
+		</div>
+		<div v-else style="color:white;" v-on:click="color='blue'">{{color}}</div>
 	</div>
 </div>
 <script>
 	var app = new Vue({
 		el: "#app",
 		data: {
-			color: 'yellow'
+			color: 'yellow',
+			showRed: true
 		}
 	});
 </script>
 ```
+In this example, you would not see the word 'white' showing up, because the clickout event stops at the red `<div>`. But once you run `app.showRed=false` in the console, the clickout event of the blue `<div>` works again.

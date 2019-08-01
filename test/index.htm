@@ -12,14 +12,20 @@
 
 <body class="h-100">
 	<div id="app">
-		<div style="padding:20px; background:yellow;" v-on:clickout="color='white'" v-on:click="color='yellow'">{{color}}
+		<div style="padding:20px; background:blue;" v-on:clickout="color='white'">
+			<div style="padding:20px; background:red;" @clickout.stop="color='blue'" v-if="showRed">
+				<div style="padding:20px; background:yellow;" v-on:clickout="color='red'" v-on:click="color='yellow'">{{color}}
+				</div>
+			</div>
+			<div v-else style="color:white;" v-on:click="color='blue'">{{color}}</div>
 		</div>
 	</div>
 	<script>
 		var app = new Vue({
 			el: "#app",
 			data: {
-				color: 'yellow'
+				color: 'yellow',
+				showRed: true
 			}
 		});
 	</script>
