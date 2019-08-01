@@ -1,0 +1,29 @@
+{
+	"name": "vue-on-clickout",
+	"version": "1.0.0",
+	"description": "Add 'v-on:clickout' event to elements.",
+	"main": "lib/vue-on-clickout.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [
+		"vue",
+		"event"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/MuTsunTsai/vue-on-clickout.git"
+	},
+	"author": "Mu-Tsun Tsai",
+	"license": "MIT",
+	"devDependencies": {
+		"gulp": "^4.0.2",
+		"gulp-header-comment": "^0.6.1",
+		"gulp-terser": "^1.2.0",
+		"gulp-umd": "^2.0.0",
+		"vue": "^2.6.10"
+	},
+	"files": [
+		"lib"
+	]
+}
