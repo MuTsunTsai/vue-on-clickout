@@ -1,9 +1,9 @@
 # Vue-On-Clickout
 
-There are many packages that uses custom derivatives to capture and
+There are many packages that uses custom directives to capture and
 handles the "click outside" event of an element. Their common problem,
 however, is that by the design of Vue.js, one must pass a function to
-the derivative and cannot directly write code for execution, as in the
+the directive and cannot directly write code for execution, as in the
 case of the v-on event handlers. This creates inconsistency in
 the coding style and is really bothering to me.
 
