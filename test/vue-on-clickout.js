@@ -30,7 +30,7 @@ const VueOnClickout = {
 			beforeCreate() {
 				let original_c = this._c;
 				function hack_c(a, b, c, d) {
-					if(b.on && b.on[event]) {
+					if(b && b.on && b.on[event]) {
 						b.directives = b.directives || [];
 						if(!b.directives.some(d => d.name == event))
 							b.directives.push({ name: event, rawName: "v-" + event });
