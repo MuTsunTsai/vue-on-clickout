@@ -2,21 +2,27 @@
 const VueOnClickout = {
 	install(Vue) {
 		const cout = "clickout";
-		
-		// Keeps a list of all elements with v-clickout directive.
+
+		// Keeps a list of all elements with v-clickout directive, ordered
+		// from deeper elements to top level elements.
 		let clickoutList = [];
+
+		let sortNeeded = false;
 
 		Vue.directive(cout, {
 			bind(el) {
-				clickoutList.push(el);
-				el.__clickoutFlag = false;
-				let add = el.addEventListener.bind(el);
-				add('click', () => el.__clickoutFlag = true);
-				add(cout, (e) => {
+				// Newly added element is likely to be of lower order,
+				// so we place it at the beginning of the array to speed up sorting.
+				clickoutList.unshift(el);
+				sortNeeded = true;
+
+				el.__clicked = false;
+				el.addEventListener('click', () => el.__clicked = true);
+				el.addEventListener(cout, (e) => {
 					// In case of stopPropagation, prevent any ancestor element
 					// from firing the clickout event.
 					if(e.cancelBubble) clickoutList.forEach(p => {
-						if(p.contains(el)) p.__clickoutFlag = true;
+						if(p.contains(el)) p.__clicked = true;
 					});
 				});
 			},
@@ -34,10 +40,13 @@ const VueOnClickout = {
 
 		// Use a central event listener to control the firing of clickout events.
 		document.addEventListener('click', () => {
-			clickoutList.sort(elSort);
+			if(sortNeeded) {
+				clickoutList.sort(elSort);
+				sortNeeded = false;
+			}
 			for(let el of clickoutList) {
-				if(!el.__clickoutFlag) el.dispatchEvent(new Event(cout));
-				el.__clickoutFlag = false;
+				if(!el.__clicked) el.dispatchEvent(new Event(cout));
+				el.__clicked = false;
 			}
 		});
 
