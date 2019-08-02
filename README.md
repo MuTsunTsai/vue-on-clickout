@@ -1,15 +1,32 @@
 # Vue-On-Clickout
 
-There are many packages that uses custom directives to capture and
-handles the "click outside" event of an element. Their common problem,
-however, is that by the design of Vue.js, one must pass a function to
-the directive and cannot directly write code for execution, as in the
-case of the v-on event handlers. This creates inconsistency in
-the coding style and is really bothering to me.
+> Add `v-on:clickout` event to elements in [Vue.js](https://www.npmjs.com/package/vue).
 
-Therefore I created Vue-On-Clickout. It is different; it actually creates the "clickout" event
-and you simply write `v-on:clickout="..."` or `@clickout="..."` as in
-any other events.
+[![npm version](https://img.shields.io/npm/v/vue-on-clickout.svg)](https://www.npmjs.com/package/vue-on-clickout)
+
+There are many packages [<sup>1</sup>](#1) that uses custom directives to capture and
+handles the "click outside" event of an element. Majority of them have the same common
+problem: they do not accept directly writing expression in the custom directive, as in the
+case of the `v-on` event handlers. This creates inconsistency in the coding style and
+is really bothering to me. There are a few existing packages that manage
+to evaluate the given expression, but still the syntax looks different, with all other
+events uses `v-on:` or `@` syntax, while only the clickout event being the exception.
+
+Therefore I created Vue-On-Clickout which is different from all of them.
+It actually creates the "clickout" event and you simply write `v-on:clickout="..."`
+or `@clickout="..."` as in any other events.
+
+<a class="anchor" id="1"><sup>1</sup></a> Such as
+[vue-clickaway](https://www.npmjs.com/package/vue-clickaway),
+[vue-clickout](vue-clickout),
+[vue-directive-clickout](https://github.com/LinusBorg/vue-directive-clickout),
+[vue-click-outside](https://www.npmjs.com/package/vue-click-outside),
+[v-click-outside](https://www.npmjs.com/package/v-click-outside),
+[vue-v-clickoutside](https://www.npmjs.com/package/vue-v-clickoutside),
+[vue-on-click-outside](https://www.npmjs.com/package/vue-on-click-outside),
+[vue-outside-click](https://www.npmjs.com/package/vue-outside-click),
+[vue-clickoutside](https://github.com/freeze-component/vue-clickoutside),
+to name a few.
 
 ## License
 

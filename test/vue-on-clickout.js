@@ -16,6 +16,9 @@ const VueOnClickout = {
 		// from deeper elements to top level elements.
 		let clickoutList = [];
 
+		// List of elements that stops the current propagation of clickout event.
+		let stopList = [];
+
 		let sortNeeded = false;
 
 		Vue.directive(cout, {
@@ -25,14 +28,8 @@ const VueOnClickout = {
 				clickoutList.unshift(el);
 				sortNeeded = true;
 
-				el.__clicked = false;
-				el.addEventListener('click', () => el.__clicked = true);
 				el.addEventListener(cout, (e) => {
-					// In case of stopPropagation, prevent any ancestor element
-					// from firing the clickout event.
-					if(e.cancelBubble) clickoutList.forEach(p => {
-						if(p.contains(el)) p.__clicked = true;
-					});
+					if(e.cancelBubble) stopList.push(el);
 				});
 			},
 			unbind(el) {
@@ -48,15 +45,20 @@ const VueOnClickout = {
 		}
 
 		// Use a central event listener to control the firing of clickout events.
-		document.addEventListener('click', () => {
+		document.addEventListener('click', (event) => {
 			if(sortNeeded) {
 				clickoutList.sort(elSort);
 				sortNeeded = false;
 			}
+
+			// Loops from bottom-up
 			for(let el of clickoutList) {
-				if(!el.__clicked) el.dispatchEvent(new Event(cout));
-				el.__clicked = false;
+				if(!el.contains(event.target) && !stopList.some(c => el.contains(c)))
+					el.dispatchEvent(new Event(cout));
 			}
+
+			// Reset stopList
+			stopList = [];
 		});
 
 		// The trick is that we hack the element-creating method of Vue,
