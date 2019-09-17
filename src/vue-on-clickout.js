@@ -4,7 +4,7 @@ const VueOnClickout = {
 		const cout = "clickout";
 
 		// Keeps a list of all elements with v-clickout directive, ordered
-		// from deeper elements to top level elements.
+		// from top level element to deeper level elements.
 		let clickoutList = [];
 
 		// List of elements that stops the current propagation of clickout event.
@@ -15,8 +15,8 @@ const VueOnClickout = {
 		Vue.directive(cout, {
 			bind(el) {
 				// Newly added element is likely to be of lower order,
-				// so we place it at the beginning of the array to speed up sorting.
-				clickoutList.unshift(el);
+				// so we place it at the end of the array to speed up sorting.
+				clickoutList.push(el);
 				sortNeeded = true;
 
 				el.addEventListener(cout, (e) => {
@@ -30,8 +30,8 @@ const VueOnClickout = {
 
 		// Sort the elements in the list so that the events will fire in the correct order.
 		function elSort(e1, e2) {
-			if(e2.contains(e1)) return -1;
-			if(e1.contains(e2)) return 1;
+			if(e2.contains(e1)) return 1;
+			if(e1.contains(e2)) return -1;
 			return 0;
 		}
 
@@ -42,9 +42,9 @@ const VueOnClickout = {
 				sortNeeded = false;
 			}
 
-			// Loops from bottom-up
+			// Loops from top-down
 			for(let el of clickoutList) {
-				if(!el.contains(event.target) && !stopList.some(c => el.contains(c)))
+				if(!el.contains(event.target) && !stopList.some(c => c.contains(el)))
 					el.dispatchEvent(new Event(cout));
 			}
 
@@ -62,13 +62,13 @@ const VueOnClickout = {
 		Vue.mixin({
 			beforeCreate() {
 				let original_c = this._c;
-				function hack_c(a, b, c, d) {
-					if(b && b.on && b.on[cout]) {
-						b.directives = b.directives || [];
-						if(!b.directives.some(d => d.name == cout))
-							b.directives.push({ name: cout, rawName: "v-" + cout });
+				function hack_c(tag, data, children, normalizationType) {
+					if(data && data.on && data.on[cout]) {
+						data.directives = data.directives || [];
+						if(!data.directives.some(d => d.name == cout))
+							data.directives.push({ name: cout, rawName: "v-" + cout });
 					}
-					return original_c(a, b, c, d);
+					return original_c(tag, data, children, normalizationType);
 				}
 				this._c = hack_c;
 			}

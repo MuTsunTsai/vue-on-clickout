@@ -4,10 +4,13 @@
 	"description": "Add 'v-on:clickout' event to elements in Vue.js.",
 	"main": "lib/vue-on-clickout.js",
 	"scripts": {
+		"version": "gulp build && git add -A",
 		"test": "echo \"Error: no test specified.\""
 	},
 	"keywords": [
 		"vue",
+		"click",
+		"outside",
 		"event"
 	],
 	"repository": {
