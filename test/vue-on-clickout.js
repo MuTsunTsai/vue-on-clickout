@@ -51,7 +51,7 @@ const VueOnClickout = {
 				sortNeeded = false;
 			}
 
-			// Loops from bottom-up
+			// Loops from top-down
 			for(let el of clickoutList) {
 				if(!el.contains(event.target) && !stopList.some(c => c.contains(el)))
 					el.dispatchEvent(new Event(cout));
