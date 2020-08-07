@@ -18,6 +18,8 @@ Therefore I created Vue-On-Clickout which is different from all of them.
 It actually creates the "clickout" event and you simply write `v-on:clickout="..."`
 or `@clickout="..."` as in any other events.
 
+Also, Vue-On-Clickout now supports Vue 3 (as of version 3.0.0-rc.5).
+
 <a class="anchor" id="1"><sup>1</sup></a> Such as
 [vue-clickaway](https://www.npmjs.com/package/vue-clickaway),
 [vue-clickout](https://github.com/mrastiak/vue-clickout),
@@ -43,7 +45,7 @@ npm install vue-on-clickout --save
 Or, simply download [`vue-on-clickout.js`](https://github.com/MuTsunTsai/vue-on-clickout/raw/master/lib/vue-on-clickout.js).
 
 
-## Usage
+## Usage (for Vue 2)
 
 Vue-On-Clickout can be used both with or without modules.
 
@@ -90,4 +92,20 @@ The following example demonstrates it all.
 ```
 In this example, you would not see the word `blue` showing up, because the clickout event bubbles "downwards" and the word `red` overrides `blue`. However you do see the word `white` because the bubbling stops there.
 
-Try this demo in this [jsFiddle link](https://jsfiddle.net/MuTsunTsai/1fqd7ayo/).
+Try this demo in this [JSFiddle link](https://jsfiddle.net/MuTsunTsai/1fqd7ayo/).
+
+## Usage (for Vue 3)
+
+The only difference for Vue 3 is that you have to use the plugin as you create the app, everything else works exactly the same.
+
+```js
+var app = Vue.createApp({
+	data: () => ({
+		color: "yellow"
+	})
+});
+app.use(VueOnClickout);
+app.mount('#app');
+```
+
+Try it in this [JSFiddle link](https://jsfiddle.net/MuTsunTsai/jz8wxrcq/).

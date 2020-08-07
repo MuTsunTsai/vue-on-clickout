@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html class="h-100">
+
+<head>
+	<title>測試</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<script src="https://unpkg.com/vue@3.0.0-rc.5/dist/vue.global.js"></script>
+	<script src="vue-on-clickout.js"></script>
+</head>
+
+<body class="h-100">
+	<div id="app">
+		<div style="padding:20px; background:blue;" v-on:clickout.stop="color='white'">
+			<div style="padding:20px; background:red;" @clickout="color='blue'">
+				<div style="padding:20px; background:yellow;" v-on:clickout="color='red'" v-on:click="color='yellow'">{{color}}
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		var app = Vue.createApp({
+			data: () => ({
+				color: "yellow"
+			})
+		});
+		app.use(VueOnClickout);
+		app.mount('#app');
+	</script>
+</body>
+
+</html>
