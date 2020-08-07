@@ -34,7 +34,7 @@ const dir = {
 	}
 };
 
-// For Vue 3
+// For Vue 3, these hooks have new names.
 dir.mounted = dir.bind;
 dir.unmounted = dir.unbind;
 
@@ -61,7 +61,7 @@ function processClickout(event) {
 	stopList = [];
 }
 
-// For Vue 3
+// Node transform function for Vue 3; it detects "v-on:clickout" and adds "v-clickout".
 function transform(node) {
 	let props = node.props;
 	if(!props) return;
@@ -84,27 +84,44 @@ function transform(node) {
 const VueOnClickout = {
 	installed: false,
 	install(Vue) {
-		setup();
+		if(!VueOnClickout.installed) {
+			// Use a central event listener to control the firing of clickout events.
+			document.addEventListener('click', processClickout);
 
+			// Wrap event.stopPropagation() method, so that even if a click event is stopped,
+			// the clickout event will still fire.
+			var sp = Event.prototype.stopPropagation;
+			function hack_stopPropagation() {
+				sp.apply(this);
+				if(this.type == 'click') processClickout(this);
+			}
+			Event.prototype.stopPropagation = hack_stopPropagation;
+
+			VueOnClickout.installed = true;
+		}
+
+		// We still use directive as in many other similar packages,
+		// because that's the most convenient way of tracking the construction
+		// and destruction of elements. So the question is how to add the "v-clickout"
+		// directive to whatever element that has "v-on:clickout" event handler.
 		Vue.directive(cout, dir);
 
-		if(typeof (Vue.version) == "string" && Vue.version.startsWith("3")) {
+		if(typeof (Vue.version) == "string" && Vue.version[0] == "3") {
 			// For Vue 3, we wrap the function `isCustomElement` in order to access
 			// the compile option (which is `this`) and add custom node transform function to it.
 			let orgICE = Vue.config.isCustomElement;
-			Vue.config.isCustomElement = function() {
-				this.nodeTransforms = this.nodeTransforms || [];
-				if(this.nodeTransforms.indexOf(transform) < 0) this.nodeTransforms.push(transform);
-				return orgICE();
+			function wrapICE(tag) {
+				let transforms = (this.nodeTransforms = this.nodeTransforms || []);
+				if(transforms.indexOf(transform) < 0) transforms.push(transform);
+				return orgICE(tag);
 			}
+			Object.defineProperty(Vue.config, "isCustomElement", {
+				get() { return wrapICE; },
+				set(v) { orgICE = v; }
+			});
 		} else {
-			// For Vue 2, the trick is that we hack the element-creating method of Vue,
-			// and replace it with a wrapper function that detects the existence
-			// of the "v-on:clickout" event. If the event exists, then add the
-			// "v-clickout" directive to it.
-			// We still use directive as in many other similar packages,
-			// because that's the most convenient way of tracking the construction
-			// and destruction of elements.
+			// For Vue 2, we hack the element-creating method of Vue,
+			// and replace it with a wrapper function to detect "v-on:clickout".
 			Vue.mixin({
 				beforeCreate() {
 					let original_c = this._c;
@@ -121,24 +138,6 @@ const VueOnClickout = {
 			});
 		}
 	}
-}
-
-function setup() {
-	if(VueOnClickout.installed) return;
-
-	// Use a central event listener to control the firing of clickout events.
-	document.addEventListener('click', processClickout);
-
-	// Wrap event.stopPropagation() method, so that even if a click event is stopped,
-	// the clickout event will still fire.
-	var sp = Event.prototype.stopPropagation;
-	function hack_stopPropagation() {
-		sp.apply(this);
-		if(this.type == 'click') processClickout(this);
-	}
-	Event.prototype.stopPropagation = hack_stopPropagation;
-
-	VueOnClickout.installed = true;
 }
 
 // Automatically load the plugin itself for Vue 2.

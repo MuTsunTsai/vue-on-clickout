@@ -68,7 +68,7 @@ Vue.use(VueOnClickout);
 
 And then in your template, on any element, use `v-on:clickout="..."` or `@clickout="..."` and watch the magic happen.
 
-In version 1.1, the order of firing the `clickout` event has been changed from "bottom-up" to "top-down", that is, the event handler of parent element will fire first, and then those of the child elements. The `.stop` modifier works in the opposite direction, so that the parent element will stop its child elements from firing the clickout event.
+In version 1.1, the order of firing the `clickout` event has been changed from "bottom-up" to "top-down", that is, the event handler of parent element will fire first, and then those of the child elements. The `.stop` modifier also works in the opposite direction, so that the parent element will stop its child elements from firing the clickout event.
 
 The following example demonstrates it all.
 
@@ -96,7 +96,7 @@ Try this demo in this [JSFiddle link](https://jsfiddle.net/MuTsunTsai/1fqd7ayo/)
 
 ## Usage (for Vue 3)
 
-The only difference for Vue 3 is that you have to use the plugin as you create the app, everything else works exactly the same.
+The only difference for Vue 3 is that you have to use the plugin as you create the app; everything else works exactly the same.
 
 ```js
 var app = Vue.createApp({
