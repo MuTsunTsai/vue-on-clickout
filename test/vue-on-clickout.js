@@ -65,7 +65,7 @@ function processClickout(event) {
 function transform(node) {
 	let props = node.props;
 	if(!props) return;
-	if(props.some(p => p.type == 7 && p.name == "on" && p.arg.content == cout) &&
+	if(props.some(p => p.type == 7 && p.name == "on" && p.arg && p.arg.content == cout) &&
 		!props.some(p => p.type == 7 && p.name == cout)) {
 		props.push({
 			"type": 7,
