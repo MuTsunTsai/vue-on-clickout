@@ -20,7 +20,7 @@ or `@clickout="..."` as in any other events.
 
 <a class="anchor" id="1"><sup>1</sup></a> Such as
 [vue-clickaway](https://www.npmjs.com/package/vue-clickaway),
-[vue-clickout](vue-clickout),
+[vue-clickout](https://github.com/mrastiak/vue-clickout),
 [vue-directive-clickout](https://github.com/LinusBorg/vue-directive-clickout),
 [vue-click-outside](https://www.npmjs.com/package/vue-click-outside),
 [v-click-outside](https://www.npmjs.com/package/v-click-outside),
@@ -89,3 +89,5 @@ The following example demonstrates it all.
 </script>
 ```
 In this example, you would not see the word `blue` showing up, because the clickout event bubbles "downwards" and the word `red` overrides `blue`. However you do see the word `white` because the bubbling stops there.
+
+Try this demo in this [jsFiddle link](https://jsfiddle.net/MuTsunTsai/1fqd7ayo/).

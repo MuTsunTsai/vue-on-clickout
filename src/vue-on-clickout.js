@@ -35,8 +35,7 @@ const VueOnClickout = {
 			return 0;
 		}
 
-		// Use a central event listener to control the firing of clickout events.
-		document.addEventListener('click', (event) => {
+		function processClickout(event) {
 			if(sortNeeded) {
 				clickoutList.sort(elSort);
 				sortNeeded = false;
@@ -50,7 +49,19 @@ const VueOnClickout = {
 
 			// Reset stopList
 			stopList = [];
-		});
+		}
+
+		// Use a central event listener to control the firing of clickout events.
+		document.addEventListener('click', processClickout);
+
+		// Wrap event.stopPropagation() method, so that even if a click event is stopped,
+		// the clickout event will still fire.
+		var sp = Event.prototype.stopPropagation;
+		function hack_stopPropagation() {
+			sp.apply(this);
+			if(this.type == 'click') processClickout(this);
+		}
+		Event.prototype.stopPropagation = hack_stopPropagation;
 
 		// The trick is that we hack the element-creating method of Vue,
 		// and replace it with a wrapper function that detects the existence
