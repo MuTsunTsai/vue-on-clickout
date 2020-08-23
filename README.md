@@ -10,4 +10,6 @@
 
 ## Note
 
-This package is now deprecated in favor of a more powerful package [Clickout-Event](https://www.npmjs.com/package/), by the same author.
+This package is now deprecated in favor of a more powerful package [Clickout-Event](https://www.npmjs.com/package/clickout-event), by the same author.
+It covers all featrues of Vue-On-Clickout,
+and is compatible with any front-end framework!
